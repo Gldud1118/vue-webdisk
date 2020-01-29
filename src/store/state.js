@@ -2,11 +2,12 @@ const state = {
     token: null,
     isAddFile: false,
     isAddFolder: false,
-    folder: {},
-    file: {},
+    openedFolder: {},
+    openedFile: {},
     recentFiles: {},
     trashedFiles:{},
     trashedFolders:{},
-    
-    rootFolderId: 'TBLFPKSK7E',
+    rootFolderId: 'TBLFPKSK7E'
 }
+
+export default state;

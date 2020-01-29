@@ -5,7 +5,7 @@ const actions = {
         return api.auth.login(email, password).then(({accessToken}) =>commit('LOGIN', accessToken) )
     },
     UPLOAD_FILE({dispatch, state}, {file}){
-        return api.file.create(file).then(_ => dispatch('FETCH_FOLDER', {folderId: state.folder.folderId}));
+        return api.file.create(file).then(_ => dispatch('FETCH_FOLDER', {folderId: state.openedFolder.folderId}));
     },
 
     FETCH_FILE({fileId}){
@@ -25,10 +25,10 @@ const actions = {
     },
    
     RENAME_FILE({state, dispatch}, {fileId, newFileName}){
-        return api.file.rename(fileId, newFileName).then(_ => dispatch('FETCH_FOLDER', {folderId:state.folder.folderId }));
+        return api.file.rename(fileId, newFileName).then(_ => dispatch('FETCH_FOLDER', {folderId:state.openedFolder.folderId }));
     },
     CHANGE_FILE_TRASHED({state, dispatch}, {fileId}){
-        return api.file.changeToTrashed(fileId).then(_ => dispatch('FETCH_FOLDER', {folderId:state.folder.folderId})) //[추가] 휴지통에 들어갈 때마다 api를 호출하는 것이 아닌 처음에만 api를 호출하고 변경이 없다면 state에 있는 data를 가져옴 만약 변경이 있다면 api를 호출할 수 있도록
+        return api.file.changeToTrashed(fileId).then(_ => dispatch('FETCH_FOLDER', {folderId:state.openedFolder.folderId})) //[추가] 휴지통에 들어갈 때마다 api를 호출하는 것이 아닌 처음에만 api를 호출하고 변경이 없다면 state에 있는 data를 가져옴 만약 변경이 있다면 api를 호출할 수 있도록
     },
     CHANGE_FILE_STARRED({state, dispatch}, {fileId}){
         return api.file.changeToStarred(fileId);//[추가]
@@ -43,14 +43,11 @@ const actions = {
         return api.file.copy(fileId, targetFolderId);
     },
     MOVE_FILE({state, dispatch}, {fileId, targetFolderId}){
-        return api.file.move(fileId, targetFolderId).then(_ => dispatch('FETCH_FOLDER', {folderId: state.folder.folderId}))
+        return api.file.move(fileId, targetFolderId).then(_ => dispatch('FETCH_FOLDER', {folderId: state.openedFolder.folderId}))
     },  
-    DOWNLOAD_FILE(_,{fileId}){
-        return api.file.download(fileId);
-    },
     FETCH_FOLDER({commit}, {folderId}){
         return api.folder.fetch(folderId).then(data => {
-            commit('SET_FOLDER', data.item)
+            commit('SET_FOLDER', data);
         })
     },
     FECTH_TRASHED_FOLDERS({commit}){
@@ -58,18 +55,18 @@ const actions = {
             commit('SET_TRASHED_FOLDERS', data.item);
         })
     },
-    ADD_FOLDER({dispatch},{parentFolderId, folderName}){
-        return api.folder.create(parentFolderId, folderName).then((_ => dispatch('FETCH_FOLDER', {id: state.folder.folderId})))
+    ADD_FOLDER({state, dispatch},{parentId, folderName}){
+        return api.folder.create(parentId, folderName).then((_ => dispatch('FETCH_FOLDER', {folderId: state.openedFolder.folderId})))
     },
     
-    RENAME_FOLDER({state, dispatch}, {folderId}){
-        return api.folder.rename(folderId, newFolderName).then(_ => dispatch('FETCH_FOLDER', {folderId:state.folder.folderId }));
+    RENAME_FOLDER({state, dispatch}, {folderId, newFolderName}){
+        return api.folder.rename(folderId, newFolderName).then(_ => dispatch('FETCH_FOLDER', {folderId:state.openedFolder.folderId }));
     },
-    CHANGE_FOLDER_STARRED(_, {folderId}){
-        return api.folder.changeToStarred(folderId);
+    CHANGE_FOLDER_STARRED({state, dispatch}, {folderId, starred}){
+        return api.folder.changeToStarred(folderId, starred).then(_ => dispatch('FETCH_FOLDER', {folderId:state.openedFolder.folderId }));
     },
-    CHANGE_FOLDER_TRASHED({dispatch}, {folderId}){
-        return api.folder.changeToTrashed(folderId).then(_ => dispatch('FETCH_FOLDER', {folderId:state.folder.folderId}));
+    CHANGE_FOLDER_TRASHED({state, dispatch}, {folderId}){
+        return api.folder.changeToTrashed(folderId).then(_ => dispatch('FETCH_FOLDER', {folderId:state.openedFolder.folderId}));
     },
     DELETE_FOLDER({dispatch},{folderId}){
         return api.folder.destroy(folderId).then(_ => dispatch('FECTH_TRASHED_FOLDER'));
@@ -81,10 +78,7 @@ const actions = {
         return api.folder.copy(folderId, targetFolderId);
     },
     MOVE_FOLDER({state,dispatch},{folderId, targetFolderId}){
-        return api.folder.move(folderId, targetFolderId).then(_ => dispatch('FETCH_FOLDER', {folderId: state.folder.folderId}))
-    },
-    DOWNLOAD_FOLDER(_,{folderId}){
-        return api.folder.download(folderId);
+        return api.folder.move(folderId, targetFolderId).then(_ => dispatch('FETCH_FOLDER', {folderId: state.openedFolder.folderId}))
     }
 }
 

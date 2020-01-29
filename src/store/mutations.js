@@ -22,10 +22,10 @@ const mutations = {
         state.recentFiles = recentFiles;
     },
     SET_FOLDER(state, folder){
-        state.folder = folder;
+        state.openedFolder = folder;
     },
     SET_FILE(state, file){
-        state.file = file;
+        state.openedFile = file;
     },
     SET_IS_ADD_FOLDER(state, toggle){
         state.SET_IS_ADD_FOLDER = toggle;
