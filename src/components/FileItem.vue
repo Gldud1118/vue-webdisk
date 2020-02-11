@@ -8,7 +8,7 @@
             <div class="card-body">
                 <h6><div class="link-02">{{data.fileName}}</div></h6>
                 <p>{{data.fileExtension}}</p>
-                <span>{{data.fileSize}}</span>
+                <!-- <span>{{data.fileSize}}</span> -->
             </div>
         </div>
     </div>	
@@ -23,6 +23,11 @@ export default {
         className(){
             let iconClass, colorClass;
             switch (this.data.fileExtension) {
+                case "png":
+                case "jpg":
+                    iconClass = "fa-file-image";
+                    colorClass = "tx-indigo";
+                    break;
                 case "pdf":
                     iconClass = "fa-file-pdf";
                     colorClass = "tx-danger";
