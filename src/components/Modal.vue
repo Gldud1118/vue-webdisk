@@ -4,12 +4,7 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <slot name="header">
-                            default header
-                        </slot>
-                        <button type="button" class="close" aria-label="Close" data-dismiss="modal" @click="$emit('close')">
-                            <span aria-hidden="true">×</span>
-                        </button>
+                        <slot name="header"></slot>
                     </div>
                     <div class="modal-body">
                          <slot name="body">
