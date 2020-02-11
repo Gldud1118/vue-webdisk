@@ -45,7 +45,7 @@ export default {
     },
 
     methods: {
-        ...mapMutations(['SET_IS_OPEN_DROPDOWN','SET_IS_OPEN_COPY_MODAL', 'SET_IS_OPEN_MOVE_MODAL', 'SET_IS_OPEN_RENAME_MODAL']),
+        ...mapMutations(['SET_IS_OPEN_DROPDOWN','SET_IS_OPEN_COPY_MODAL', 'SET_IS_OPEN_MOVE_MODAL', 'SET_IS_OPEN_RENAME_MODAL','SET_IS_OPEN_DROPDOWN_DEFAULT']),
         setupClickOutside(){
             document.querySelector('body').addEventListener('click', e =>{
                 Array.from(document.querySelectorAll(".dropdown-menu"), (el) => {
@@ -54,6 +54,7 @@ export default {
                         setTimeout(function(){ el.style.display = 'none';}, 100)
                     }
                     this.SET_IS_OPEN_DROPDOWN(false);
+                    this.SET_IS_OPEN_DROPDOWN_DEFAULT(false);
                     el.style.display = 'none';
                 })
             })
