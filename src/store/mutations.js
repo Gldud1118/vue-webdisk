@@ -50,6 +50,9 @@ const mutations = {
     SET_IS_OPEN_DROPDOWN(state, toggle){
         state.isOpenDropdown = toggle;
     },
+    SET_IS_OPEN_DROPDOWN_DEFAULT(state, toggle){
+        state.isOpenDropdownDefault = toggle;
+    },
     SET_IS_OPEN_COPY_MODAL(state, toggle){
         state.isOpenCopyModal = toggle;
     },

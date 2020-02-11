@@ -1,6 +1,7 @@
 const state = {
     token: null, //인증 토큰 
     isOpenDropdown : false, //드롭다운 토글 상태 
+    isOpenDropdownDefault: false,
     folderPath : [], //폴더 패스
     folderTree : [], //폴더 트리
     openedFolder: {},//현재 열린 폴더
