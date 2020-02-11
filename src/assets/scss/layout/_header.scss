@@ -4,6 +4,8 @@
 
 //Fx Header
 
+
+
 .#{$class-prefix}-header {
   position: relative;
   z-index: 99;
@@ -126,16 +128,17 @@
 
   &__logo {
     display: inline-block;
-    margin-left: 1.7rem;
+    //margin-left: 1.7rem;
     font-size: 27px;
     font-family: "IBM Plex Sans", sans-serif;
     font-weight: 400;
+    color:  #0168fa !important;
     span{
       font-weight: 600;
     }
-    @include media-breakpoint-down(md) {
-      margin-left: 1rem;
-    }
+    // @include media-breakpoint-down(md) {
+    //   margin-left: 1rem;
+    // }
 
     &-link,
     &-symbol,
