@@ -1,5 +1,6 @@
 import { setAuthInHeader } from "../api";
 
+
 const mutations = {
     LOGIN(state, token){
         if(!token) return
@@ -12,23 +13,54 @@ const mutations = {
         delete localStorage.token;
         setAuthInHeader(null)
     },
-    SET_TRASHED_FILES(state, trashedFiles){
-        state.trashedFiles = trashedFiles;
+    SET_IS_TRASHED_UPDATE(state,toggle){
+        state.isTrashedUpdate = toggle;
     },
-    SET_TRASHED_FOLDERS(state, trashedFolders){
-        state.trashedFolders = trashedFolders;
+    SET_TRASHED_DISK(state, trashedDisk){
+        state.trashedDisk = trashedDisk;
+    },
+    SET_IS_STARRED_UPDATE(state,toggle){
+        state.isStarredUpdate = toggle;
+    },
+    SET_STARRED_DISK(state, starredDisk){
+        state.starredDisk = starredDisk;
     },
     SET_RECENT_FILES(state, recentFiles){
-        state.recentFiles = recentFiles;
+        state.recentFiles=recentFiles
+        
     },
-    SET_FOLDER(state, folder){
-        state.openedFolder = folder;
+    SET_FILE_LIBRARY(state, fileLibrary){
+        state.fileLibrary = fileLibrary;
     },
-    SET_FILE(state, file){
-        state.openedFile = file;
+    SET_TARGET_FOLDER_ID(state, targetFolderId){
+        state.targetFolderId = targetFolderId;
     },
-    SET_IS_ADD_FOLDER(state, toggle){
-        state.SET_IS_ADD_FOLDER = toggle;
+    SET_FOLDER(state, openedFolder){
+        state.openedFolder = openedFolder;
+    },
+    SET_CURRENT_ITEM(state, currentItem){
+        state.currentItem = currentItem;
+    },
+    SET_FOLDER_PATH(state, folderPath){
+        state.folderPath = folderPath;
+    },
+    SET_FOLDER_TREE(state, folderTree){
+        state.folderTree = folderTree;
+    },
+    SET_IS_OPEN_DROPDOWN(state, toggle){
+        state.isOpenDropdown = toggle;
+    },
+    SET_IS_OPEN_COPY_MODAL(state, toggle){
+        state.isOpenCopyModal = toggle;
+    },
+    SET_IS_OPEN_MOVE_MODAL(state, toggle){
+        state.isOpenMoveModal = toggle;
+    },
+    SET_IS_OPEN_RENAME_MODAL(state, toggle){
+        state.isOpenRenameModal =toggle;
+    },
+    SET_DROPDOWN_POS(state, dropdownPos){
+       state.dropdownPos =dropdownPos;
     }
 
 }

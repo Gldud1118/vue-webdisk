@@ -8,36 +8,47 @@ const actions = {
         return api.file.create(file).then(_ => dispatch('FETCH_FOLDER', {folderId: state.openedFolder.folderId}));
     },
 
-    FETCH_FILE({fileId}){
-        return api.file.fetch(fileId).then(data => {
-            commit('SET_FILE', data.item)
-        })
-    },
-    FECTH_TRASHED_FILES({commit}){
-        return api.file.fetchTrashed().then(data => {
-            commit('SET_TRASHED_FILES', data.item)
-        })
-    },  
     FETCH_RECENT_FILES({commit}){
-        return api.file.fetchRecents().then(data => {
-            commit('SET_RECENT_FILES', data.item)
+        return api.file.fetchRecents().then(data =>{
+            commit('SET_RECENT_FILES', data);
+        }) 
+    },
+    FETCH_FILE_LIBRARY({commit},{mimeType}){
+        
+        return api.file.fetchFileLibrary(mimeType).then(data => {
+            commit('SET_FILE_LIBRARY', data);
         })
     },
    
-    RENAME_FILE({state, dispatch}, {fileId, newFileName}){
-        return api.file.rename(fileId, newFileName).then(_ => dispatch('FETCH_FOLDER', {folderId:state.openedFolder.folderId }));
+    RENAME_FILE({state, dispatch,commit}, {fileId, newFileName}){
+        return api.file.rename(fileId, newFileName).then(data => {
+            commit("SET_CURRENT_ITEM", data);
+        }).then(_ => dispatch('FETCH_FOLDER', {folderId:state.openedFolder.folderId }));
     },
-    CHANGE_FILE_TRASHED({state, dispatch}, {fileId}){
-        return api.file.changeToTrashed(fileId).then(_ => dispatch('FETCH_FOLDER', {folderId:state.openedFolder.folderId})) //[추가] 휴지통에 들어갈 때마다 api를 호출하는 것이 아닌 처음에만 api를 호출하고 변경이 없다면 state에 있는 data를 가져옴 만약 변경이 있다면 api를 호출할 수 있도록
+    CHANGE_FILE_TRASHED({state, dispatch,commit}, {fileId, trashed}){
+        return api.file.changeTrashedStatus(fileId,trashed).then(data => {
+            commit("SET_CURRENT_ITEM", data);
+            commit('SET_IS_TRASHED_UPDATE', true);
+            commit('SET_IS_STARRED_UPDATE', true);
+        }).then((_) => dispatch('FETCH_FOLDER', {folderId:state.openedFolder.folderId }));
     },
-    CHANGE_FILE_STARRED({state, dispatch}, {fileId}){
-        return api.file.changeToStarred(fileId);//[추가]
+    RESTORE_FILE({dispatch,commit}, {fileId, trashed}){
+        return api.file.changeTrashedStatus(fileId, trashed).then(data => {
+            commit("SET_CURRENT_ITEM", data);
+            commit('SET_IS_TRASHED_UPDATE', true);
+        }).then((_) => dispatch('FETCH_TRASHED_DISK'));
     },
-    DELETE_FILE({dispatch}, {fileId}){
-        return api.file.destroy(fileId).then(_ => dispatch('FECTH_TRASHED_FILES'));
+    CHANGE_FILE_STARRED({ commit}, {fileId, starred}){
+        return api.file.changeStarredStatus(fileId, starred).then(data => {
+            commit('SET_CURRENT_ITEM', data);
+            commit('SET_IS_STARRED_UPDATE', true);
+        });
     },
-    RESTORE_FILE({dispatch}, {fileId}){
-        return api.file.restore(fileId).then(_=>dispatch('FETCH_TRASHED_FILES'))
+    DELETE_FILE({dispatch,commit}, {fileId}){
+        return api.file.destroy(fileId).then(_ => dispatch('FETCH_TRASHED_DISK')).then((_) =>{
+            commit('SET_IS_TRASHED_UPDATE', true);
+            
+        })
     },
     COPY_FILE(_,{fileId, targetFolderId}){
         return api.file.copy(fileId, targetFolderId);
@@ -45,40 +56,73 @@ const actions = {
     MOVE_FILE({state, dispatch}, {fileId, targetFolderId}){
         return api.file.move(fileId, targetFolderId).then(_ => dispatch('FETCH_FOLDER', {folderId: state.openedFolder.folderId}))
     },  
-    FETCH_FOLDER({commit}, {folderId}){
+    FETCH_FOLDER({dispatch,commit}, {folderId}){
         return api.folder.fetch(folderId).then(data => {
             commit('SET_FOLDER', data);
+        }).then(_ => dispatch('FETCH_FOLDER_TREE'));
+    },
+    FETCH_FOLDER_PATH({commit}, {folderId}){
+        return api.folder.fetchFolderPath(folderId).then(data => {
+            commit('SET_FOLDER_PATH', data)
         })
     },
-    FECTH_TRASHED_FOLDERS({commit}){
+    FETCH_FOLDER_TREE({commit}){
+        return api.folder.fetchFolderTree().then(data => {
+            commit('SET_FOLDER_TREE', data)
+        })
+    },
+    FETCH_TRASHED_DISK({dispatch,commit}){
         return api.folder.fetchTrashed().then(data =>{
-            commit('SET_TRASHED_FOLDERS', data.item);
+            commit('SET_TRASHED_DISK', data);
+            commit('SET_IS_TRASHED_UPDATE', false);
+        }).then(_ => dispatch('FETCH_FOLDER_TREE'));
+    },
+    FETCH_STARRED_DISK({commit}){
+        return api.folder.fetchStarred().then(data =>{
+            commit('SET_STARRED_DISK', data);
+            commit('SET_IS_STARRED_UPDATE', false);
         })
     },
     ADD_FOLDER({state, dispatch},{parentId, folderName}){
-        return api.folder.create(parentId, folderName).then((_ => dispatch('FETCH_FOLDER', {folderId: state.openedFolder.folderId})))
+        return api.folder.create(parentId, folderName).then(_ => dispatch('FETCH_FOLDER', {folderId: state.openedFolder.folderId}))
     },
     
-    RENAME_FOLDER({state, dispatch}, {folderId, newFolderName}){
-        return api.folder.rename(folderId, newFolderName).then(_ => dispatch('FETCH_FOLDER', {folderId:state.openedFolder.folderId }));
+    RENAME_FOLDER({state, dispatch,commit}, {folderId, newFolderName}){
+        return api.folder.rename(folderId, newFolderName).then(data =>{
+            commit('SET_CURRENT_ITEM', data);
+        }).then((_) => dispatch('FETCH_FOLDER', {folderId:state.openedFolder.folderId }))
     },
-    CHANGE_FOLDER_STARRED({state, dispatch}, {folderId, starred}){
-        return api.folder.changeToStarred(folderId, starred).then(_ => dispatch('FETCH_FOLDER', {folderId:state.openedFolder.folderId }));
+    CHANGE_FOLDER_STARRED({commit}, {folderId,starred}){
+        return api.folder.changeStarredStatus(folderId,starred).then(data => {
+            commit('SET_CURRENT_ITEM', data);
+            commit('SET_IS_STARRED_UPDATE', true);
+        });
     },
-    CHANGE_FOLDER_TRASHED({state, dispatch}, {folderId}){
-        return api.folder.changeToTrashed(folderId).then(_ => dispatch('FETCH_FOLDER', {folderId:state.openedFolder.folderId}));
+    CHANGE_FOLDER_TRASHED({state,dispatch,commit}, {folderId, trashed}){
+        return api.folder.changeTrashedStatus(folderId, trashed).then(data => {
+            commit("SET_CURRENT_ITEM", data);
+            commit('SET_IS_TRASHED_UPDATE', true);
+            commit('SET_IS_STARRED_UPDATE', true);
+        }).then((_) => dispatch('FETCH_FOLDER', {folderId:state.openedFolder.folderId }))
     },
-    DELETE_FOLDER({dispatch},{folderId}){
-        return api.folder.destroy(folderId).then(_ => dispatch('FECTH_TRASHED_FOLDER'));
+    RESTORE_FOLDER({dispatch,commit}, {folderId, trashed}){
+        return api.folder.changeTrashedStatus(folderId,trashed).then(data => {
+            commit("SET_CURRENT_ITEM", data);
+            commit('SET_IS_TRASHED_UPDATE', true);
+        }).then((_) => dispatch('FETCH_TRASHED_DISK'))
     },
-    RESTORE_FOLDER({dispatch},{folderId}){
-        return api.folder.restore(folderId).then(_=>dispatch('FETCH_TRASHED_FOLDER'));
+    DELETE_FOLDER({dispatch,commit},{folderId}){
+        return api.folder.destroy(folderId).then(_ => dispatch('FETCH_TRASHED_DISK')).then((_) =>{
+            commit('SET_IS_TRASHED_UPDATE', true);
+            
+        })
     },
-    COPY_FOLDER(_,{folderId, targetFolderId}){
-        return api.folder.copy(folderId, targetFolderId);
+   
+    COPY_FOLDER({dispatch},{folderId, targetFolderId}){
+        return api.folder.copy(folderId, targetFolderId).then(_ => dispatch('FETCH_FOLDER_TREE'));
     },
     MOVE_FOLDER({state,dispatch},{folderId, targetFolderId}){
-        return api.folder.move(folderId, targetFolderId).then(_ => dispatch('FETCH_FOLDER', {folderId: state.openedFolder.folderId}))
+        return api.folder.move(folderId, targetFolderId).then(_ => dispatch('FETCH_FOLDER', {folderId: state.openedFolder.folderId}));
     }
 }
 
