@@ -1,5 +1,6 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router'
+import VueRouter from 'vue-router';
+import store from '@/store';
 
 Vue.use(VueRouter)
 
@@ -16,15 +17,18 @@ const routes = [
       {
         path: 'mydisk',
         name : 'MyDisk',
-        component: () => import('../views/MyDisk.vue'),
-        // beforeEnter: (to, from, next) => {
-        //   // ...
-        // }
+        component: () => import('../views/Folder.vue')
+      },
+      {
+        path: `folder/${store.state.rootFolderId}`,
+        name : 'MyDisk',
+        component: () => import('../views/Folder.vue'),
+        redirect: '/disk/mydisk'
       },
       {
         path: 'folder/:fid',
         name : 'Folder',
-        component: () => import('../views/MyDisk.vue')
+        component: () => import('../views/Folder.vue'),
       },
       {
         path: 'recents',
@@ -44,27 +48,27 @@ const routes = [
       {
         path: 'documents',
         name : 'Documents',
-        component: () => import('../views/Documents.vue')
+        component: () => import('../views/FileLibrary.vue')
       },
       {
         path: 'images',
         name : 'Images',
-        component: () => import('../views/Images.vue')
+        component: () => import('../views/FileLibrary.vue')
       },
       {
         path: 'videos',
         name : 'Videos',
-        component: () => import('../views/Videos.vue')
+        component: () => import('../views/FileLibrary.vue')
       },
       {
         path: 'audios',
         name : 'Audios',
-        component: () => import('../views/Audios.vue')
+        component: () => import('../views/FileLibrary.vue')
       },
       {
         path: 'zip',
         name : 'Zip',
-        component: () => import('../views/Zip.vue')
+        component: () => import('../views/FileLibrary.vue')
       },
       
       
