@@ -24,10 +24,12 @@ export default {
     methods : {
         ...mapMutations([
             'SET_IS_OPEN_DROPDOWN',
+            'SET_IS_OPEN_DROPDOWN_DEFAULT',
             'SET_CURRENT_ITEM',
             'SET_DROPDOWN_POS'
         ]),
         fetchCurrentFolder(){
+            this.SET_IS_OPEN_DROPDOWN_DEFAULT(false);
             if(this.currentItem.folderId !== this.data.folderId || !this.currentItem.folderId || this.currentItem.type !== this.data.type){
                 this.SET_IS_OPEN_DROPDOWN(true);
                 this.SET_CURRENT_ITEM(this.data);

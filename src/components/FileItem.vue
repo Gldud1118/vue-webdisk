@@ -2,8 +2,8 @@
     <div class="col-sm-6 col-md-4 col-lg-2" :data-file-id="data.fileId">
         <div class="card card-file">
             <a href="" class="dropdown-link" data-toggle="dropdown" @click.prevent="fetchCurrentFile"></a>
-            <div class="card-file-thumb">
-                <i :class="`far ${iconName}`"></i>
+            <div :class="`card-file-thumb ${className.colorClass}`">
+                <i :class="`far ${className.iconClass}`"></i>
             </div>
             <div class="card-body">
                 <h6><div class="link-02">{{data.fileName}}</div></h6>
@@ -20,44 +20,52 @@ export default {
 
     props: ['data'],
     computed :{
-        iconName(){
-            let iconClass;
+        className(){
+            let iconClass, colorClass;
             switch (this.data.fileExtension) {
                 case "pdf":
-                    iconClass = "fa-file-pdf"
+                    iconClass = "fa-file-pdf";
+                    colorClass = "tx-danger";
                     break;
                 case "docx":
-                    iconClass = "fa-file-word"
+                    iconClass = "fa-file-word";
+                    colorClass = "tx-primary";
                     break;
                 case "ppt":
-                    iconClass = "fa-file-powerpoint"
+                    iconClass = "fa-file-powerpoint";
+                    colorClass = "tx-orange";
                     break;
-                case "xls":
-                    iconClass = "fa-file-excel"
+                case "xlsx":
+                    iconClass = "fa-file-excel";
+                    colorClass = "tx-success";
                     break;
                 case "txt":
-                    iconClass = "fa-file-alt"
+                    iconClass = "fa-file-alt";
+                    colorClass = "tx-gray-600";
                     break;
                 case "psd":
-                    iconClass = "fa-file-image"
+                    iconClass = "fa-file-image";
+                    colorClass = "tx-indigo";
                     break;
                 case "html":
-                    iconClass = "fa-file-code"
+                    iconClass = "fa-file-code";
+                    colorClass = "tx-orange";
                     break;
                 case "json":
-                    iconClass = "fa-file-pdf"
+                    iconClass = "fa-file-code";
+                    colorClass = "tx-purple";
                     break;
                 case "css":
-                    iconClass = "fa-file-pdf"
+                    iconClass = "fa-file-code"
+                    colorClass = "tx-primary";
                     break;
-            
-            
                 default:
-
+                    iconClass = "fa-file-code"
+                    colorClass = "tx-gray-600";
                     break;
             }
 
-            return iconClass;
+            return {iconClass, colorClass};
             
         },
         ...mapState(['currentItem', 'isOpenDropdown'])
@@ -65,10 +73,12 @@ export default {
     methods : {
         ...mapMutations([
             'SET_IS_OPEN_DROPDOWN',
+            'SET_IS_OPEN_DROPDOWN_DEFAULT',
             'SET_CURRENT_ITEM',
             'SET_DROPDOWN_POS'
         ]),
         fetchCurrentFile(){
+            this.SET_IS_OPEN_DROPDOWN_DEFAULT(false);
             if(this.currentItem.fileId !== this.data.fileId || !this.currentItem.fileId || this.currentItem.type !== this.data.type){
                 this.SET_IS_OPEN_DROPDOWN(true);
                 this.SET_CURRENT_ITEM(this.data);

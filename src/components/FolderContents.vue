@@ -49,7 +49,7 @@ export default {
         setupClickOutside(){
             document.querySelector('body').addEventListener('click', e =>{
                 Array.from(document.querySelectorAll(".dropdown-menu"), (el) => {
-                    if(e.target.dataset.toggle == "dropdown") return;
+                    if(e.target.dataset.toggle === "dropdown") return;
                     if(el.contains(e.target)){
                         setTimeout(function(){ el.style.display = 'none';}, 100)
                     }
