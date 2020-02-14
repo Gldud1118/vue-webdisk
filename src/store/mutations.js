@@ -32,6 +32,9 @@ const mutations = {
     SET_FILE_LIBRARY(state, fileLibrary){
         state.fileLibrary = fileLibrary;
     },
+    SET_SEARCH_RESULTS(state, searchResults){
+        state.searchResults = searchResults;
+    },
     SET_TARGET_FOLDER_ID(state, targetFolderId){
         state.targetFolderId = targetFolderId;
     },

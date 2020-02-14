@@ -70,6 +70,11 @@ const routes = [
         name : 'Zip',
         component: () => import('../views/FileLibrary.vue')
       },
+      {
+        path: 'search',
+        name : 'Search',
+        component: () => import('../views/Search.vue')
+      },
       
       
     ]

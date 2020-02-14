@@ -51,9 +51,6 @@ export const file = {
     destroy(fileId){
         return request('delete', `/api/disk/file/${fileId}`);
     },
-    restore(fileId){
-        return request('put', `/api/disk/${fileId}`);
-    },
     copy(fileId, targetFolderId){
         return request('', `/api/disk/file/copy/${fileId}`, JSON.stringify(targetFolderId));
     },
@@ -62,6 +59,9 @@ export const file = {
     },
     download(fileId){
         return request('get', `/api/disk/file/download/${fileId}`)
+    },
+    search(query){
+        return request('get', `/api/disk/files/search?q=${query}`)
     }
 }
 

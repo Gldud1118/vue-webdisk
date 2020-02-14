@@ -56,6 +56,13 @@ const actions = {
     MOVE_FILE({state, dispatch}, {fileId, targetFolderId}){
         return api.file.move(fileId, targetFolderId).then(_ => dispatch('FETCH_FOLDER', {folderId: state.openedFolder.folderId}))
     },  
+    SEARCH_FILE({commit}, {query}){
+        console.log(query);
+        return api.file.search(query).then(data => {
+
+            commit('SET_SEARCH_RESULTS', data);
+        })
+    },
     FETCH_FOLDER({dispatch,commit}, {folderId}){
         return api.folder.fetch(folderId).then(data => {
             commit('SET_FOLDER', data);

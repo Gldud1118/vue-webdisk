@@ -15,14 +15,20 @@
             <!-- /brand -->        
             <!-- Header toolbar-->
             <div class="dt-header__toolbar">
-                <!-- Search box -->
-                <form class="search-box d-none d-lg-block">
-                <div class="input-group">
-                    <input class="form-control" placeholder="Search for files and folders" value="" type="search">
-                    <span class="search-icon"><i class="far fa-search"></i></span>
-                </div>
-                </form>
+                    <!-- Search box -->
+                <div class="search-box">
+                    <form class=" d-none d-lg-block" @submit.prevent="onRedirectSearchResult">
+                        <div class="input-group">
+                            <input class="form-control" placeholder="Search for files and folders" v-model="searchQuery" type="search">
+                            <span class="search-icon"><i class="far fa-search"></i></span>
+                        </div>
+                    </form>
+                    <div class="search-result">
+                        <!-- 매칭되는 검색 결과 값이 나온다. -->
+                    </div>
                 <!-- /search box -->
+                </div>
+                
                 <!-- Header Menu Wrapper -->
                 <div class="dt-nav-wrapper">
                 <!-- Header Menu -->
@@ -46,3 +52,31 @@
     </header>
     <!-- /header -->
 </template>
+
+<script>
+import { mapActions } from 'vuex'
+export default {
+    data() {
+        return {
+            searchQuery : ""
+        }
+    },
+
+    methods: {
+        ...mapActions(['SEARCH_FILE']),
+        onRedirectSearchResult(){
+            this.SEARCH_FILE({query : this.searchQuery}).finally(_ =>{
+                this.$router.push({ name : 'Search', query: { q: this.searchQuery }})
+                this.searchQuery = "";
+            })
+        }
+    },
+}
+</script>
+
+<style lang="scss">
+    .search-result{
+        position: absolute;
+        width: 100%;
+    }
+</style>

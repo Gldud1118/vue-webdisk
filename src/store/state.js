@@ -18,7 +18,8 @@ const state = {
     trashedDisk:{},//삭제된 디스크
     starredDisk:{},//중요처리 디스크
     rootFolderId: 'TBLFPKSK7E', //루트 폴더 아이디,
-    dropdownPos :{} 
+    dropdownPos :{},
+    searchResults : [] 
 }
 
 export default state;
