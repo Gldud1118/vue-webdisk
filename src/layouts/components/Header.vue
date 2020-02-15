@@ -54,7 +54,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 export default {
     data() {
         return {
@@ -63,12 +62,9 @@ export default {
     },
 
     methods: {
-        ...mapActions(['SEARCH_FILE']),
         onRedirectSearchResult(){
-            this.SEARCH_FILE({query : this.searchQuery}).finally(_ =>{
-                this.$router.push({ name : 'Search', query: { q: this.searchQuery }})
-                this.searchQuery = "";
-            })
+            this.$router.push({ name : 'Search', query: { q: this.searchQuery }})
+            this.searchQuery = "";
         }
     },
 }

@@ -19,7 +19,6 @@ const state = {
     starredDisk:{},//중요처리 디스크
     rootFolderId: 'TBLFPKSK7E', //루트 폴더 아이디,
     dropdownPos :{},
-    searchResults : [] 
 }
 
 export default state;
