@@ -12,6 +12,8 @@ const store = new Vuex.Store({
   getters,
   mutations,
   actions
-})
+});
+const { token } = localStorage
+store.commit('LOGIN', token)
 
 export default store;

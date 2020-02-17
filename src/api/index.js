@@ -111,6 +111,6 @@ export const folder = {
 
 export const auth = {
     login(email, password) {
-      return request('post', '/login', {email, password}) 
+      return request('post', '/api/account/login', {email, password}) 
     }
   }

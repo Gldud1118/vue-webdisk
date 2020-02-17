@@ -2,16 +2,23 @@ import Vue from 'vue'
 import VueRouter from 'vue-router';
 import store from '@/store';
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
+
+const requireAuth = (to, from, next) => {
+  const loginPath = `/login?rPath=${encodeURIComponent(to.path)}`
+  store.getters.isAuth ? next() : next(loginPath)
+}
 
 const routes = [
   {
     path: "/",
-    redirect: '/disk/mydisk'
+    redirect: '/disk/mydisk',
+    beforeEnter: requireAuth
   },
   {
     path: '/disk',
     component: () => import('../layouts/main/Main.vue'),
+    beforeEnter: requireAuth,
     children:[
       
       {
