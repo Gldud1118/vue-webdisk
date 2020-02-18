@@ -3,7 +3,13 @@
         <div class="card card-file">
             <a href="" class="dropdown-link" data-toggle="dropdown" @click.prevent="fetchCurrentFile"></a>
             <div :class="`card-file-thumb ${className.colorClass}`">
-                <i :class="`far ${className.iconClass}`"></i>
+                <div v-if="data.fileExtension === 'png' || data.fileExtension === 'jpg' || data.fileExtension === 'jpeg' || data.fileExtension === 'bmp'">
+                    <img :src="imgSrc" alt="thumbnail" class="thumb">
+                </div>
+                <div v-else>
+                    <i :class="`far ${className.iconClass}`"></i>
+                </div>
+                
             </div>
             <div class="card-body">
                 <h6><div class="link-02">{{data.fileName}}</div></h6>
@@ -20,14 +26,12 @@ export default {
 
     props: ['data'],
     computed :{
+        imgSrc(){
+            return `${process.env.VUE_APP_APIHOST}/api/disk/createpreview/Thumbnail/${this.data.fileId}/t.png`
+        },
         className(){
             let iconClass, colorClass;
             switch (this.data.fileExtension) {
-                case "png":
-                case "jpg":
-                    iconClass = "fa-file-image";
-                    colorClass = "tx-indigo";
-                    break;
                 case "pdf":
                     iconClass = "fa-file-pdf";
                     colorClass = "tx-danger";
