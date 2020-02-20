@@ -4,7 +4,6 @@
             <label class="d-block tx-medium tx-10 tx-uppercase tx-sans tx-spacing-1 tx-color-03 mb-4">오늘</label>
             <div class="row row-xs file-list">
                 <FileItem v-for="file in recentFiles.today" :key="`${file.fileId}`" :data="file" />
-                <!-- @setDropdownPos="setDropdownPos" -->
             </div>
         </div>
         <!-- 최근 일주일 -->
@@ -65,13 +64,7 @@ export default {
     methods:{
         ...mapActions(['FETCH_RECENT_FILES']),
         fetchData(){
-            
-            this.FETCH_RECENT_FILES().then(() =>{
-               
-            })
- console.log(this.recentFiles)
-
-           
+            this.FETCH_RECENT_FILES();
         }
     }
 

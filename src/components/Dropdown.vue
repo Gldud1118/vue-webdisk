@@ -24,9 +24,9 @@ export default {
         //파일이냐 폴더이냐에 따라서 host다르게 리턴
         downloadUrl(){
             if(this.currentItem.type === 'folder'){
-                return `${this.host}/api/disk/folder/download/${this.currentItem.folderId}`
+                return `${process.env.VUE_APP_APIHOST}/api/disk/folder/download/${this.currentItem.folderId}`
             }else if(this.currentItem.type === 'file'){
-                return `${this.host}/api/disk/file/download/${this.currentItem.fileId}`
+                return `${process.env.VUE_APP_APIHOST}/api/disk/file/download/${this.currentItem.fileId}`
             }
         },
         //starred상태에 따라 text다르게 나오기 
@@ -34,11 +34,6 @@ export default {
             return this.currentItem.starred ? '중요 문서함에서 삭제' : '중요 문서함에 추가'
         }
         
-    },
-    data(){
-        return{
-            host : process.env.VUE_APP_APIHOST        
-        }
     },
     watch:{
        dropdownPos : {

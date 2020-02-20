@@ -61,6 +61,10 @@
     align-items: center;
     justify-content: center;
     font-size: 36px;
+    overflow: hidden;
+    .thumb{
+      max-width: 100%;
+  }
   }
 
   .show{
@@ -74,7 +78,7 @@
  .dropdown-link{
      position: absolute;
      top: 5px;
-     right: 7px;
+     right: 4px;
      &::before {
          display: inline-block;
          content: "\f142";
