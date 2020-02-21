@@ -1,1 +1,1 @@
-/    /disk/mydisk   200
+/disk/recents    /index.html   200
