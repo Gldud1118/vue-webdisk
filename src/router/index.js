@@ -16,10 +16,6 @@ const routes = [
     beforeEnter: requireAuth
   },
   {
-    path: "/disk/mytest",
-    component: () => import('../layouts/main/Main.vue')
-  },
-  {
     path: '/disk',
     component: () => import('../layouts/main/Main.vue'),
     beforeEnter: requireAuth,
