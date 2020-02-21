@@ -23,7 +23,6 @@ const routes = [
       
       {
         path: 'mydisk',
-        redirect : '/disk/mydisk',
         name : 'MyDisk',
         component: () => import('../views/Folder.vue')
       },
